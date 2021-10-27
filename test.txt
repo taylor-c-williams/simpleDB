@@ -1,0 +1,1 @@
+Just checkin make sure bootstrap & git installed correctly
