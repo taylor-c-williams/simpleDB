@@ -1,5 +1,4 @@
-// const { create } = require('domain');
-const { readFile, writeFile } =  require('fs/promises');
+const { readFile, writeFile, readdir } =  require('fs/promises');
 const path = require('path');
 const shortid = require('shortid');
 
@@ -29,22 +28,22 @@ class SimpleDB {
       });
   }
 
-  getAll(rootDir) {
-    const filePath = `${rootDir}/${expect.any(String)}.json`;
-    // return obj as item in an array
-    return Promise.all ([
-      // readFile 
-      readFile(filePath, JSON)
-      // Unstring
-        .then((unstrungFile) => JSON.parse(unstrungFile))
-      // Get object
-        .catch((err) => {
-          if (err.code === 'ENOENT') {
-            return null;
-          }
-          throw err;
-        })
-    ]);
+  async getAll() {
+    const allFiles = await readdir(this.rootDir);
+    const filePromise = await Promise.all (
+      allFiles.map((fileName) => 
+        readFile(`${this.rootDir}/${fileName}`, JSON)
+          .then((unstrungFile) => JSON.parse(unstrungFile))
+
+          .catch((err) => {
+            if (err.code === 'ENOENT') {
+              return null;
+            }
+            throw err;
+          })
+      )
+    );
+    return filePromise;
   }
 }
 

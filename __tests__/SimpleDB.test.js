@@ -24,8 +24,17 @@ describe('SimpleDB', () => {
 
   // Get All
   it('Returns an array of all objects within the directory', () => {
-    return DB.getAll(rootDir).then((newObj) => {
-      expect(newObj).toBeUndefined;
-    });
+    const expected = [
+      { anArray: 'of objects' },
+      { likeSo: 'another object' }
+    ];
+
+    return DB
+      .save([{ anArray: 'of objects' }])
+      .then(() => DB.save({ likeSo: 'another object' }))
+      .then (DB.getAll())
+      .then((allObj) => 
+        expect(allObj).toEqual(expected));
   });
 });
+
