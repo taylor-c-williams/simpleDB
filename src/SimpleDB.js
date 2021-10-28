@@ -30,11 +30,21 @@ class SimpleDB {
   }
 
   getAll(rootDir) {
-    // Promise.All 
-    // readFile for each file
-    // Unstring
-    // Get objects
+    const filePath = `${rootDir}/${expect.any(String)}.json`;
     // return obj as item in an array
+    return Promise.all ([
+      // readFile 
+      readFile(filePath, JSON)
+      // Unstring
+        .then((unstrungFile) => JSON.parse(unstrungFile))
+      // Get object
+        .catch((err) => {
+          if (err.code === 'ENOENT') {
+            return null;
+          }
+          throw err;
+        })
+    ]);
   }
 }
 
