@@ -11,10 +11,11 @@ describe ('SimpleDB', () => {
 
   it('Creates and saves an object', () => {
     const DB = new SimpleDB(rootDir);
-    const object = 'this is a string';
+    const object = { words: 'this is a string' };
 
     return DB
       .save(object)
-      .then((object) => expect(object).toEqual(object));
+      .then((booger) => 
+        expect(booger).toEqual(expect.any(String)));
   });
 });
