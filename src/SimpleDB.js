@@ -5,18 +5,30 @@ const shortid = require('shortid');
 
 class SimpleDB {
   constructor(rootDir) {
-    const fileName = `${shortid.generate()}.json`; 
-    this.newFile = path.join(rootDir, fileName); 
-  }
-  
-  save(object){
-    const objectContents = readFile(object, 'utf8');
-    const createdFile = writeFile(this.newFile, stringyObject);
-    const stringyObject = JSON.stringify(object); 
-    return createdFile;
+    this.rootDir = rootDir;
   }
 
-  //Need to add readfile
+  save(file){
+    this.id = `${shortid.generate()}`;
+    file.id = this.id;
+    const fileName = `${file.id}.json`; 
+    this.newFile = path.join(this.rootDir, fileName); 
+    const stringyObject = JSON.stringify(file); 
+    return writeFile(this.newFile, stringyObject);
+  }
+
+  get(id) {
+    const filePath = `${this.rootDir}/${id}.json`;
+    return readFile(filePath, JSON)
+      .then((unstrungFile) => JSON.parse(unstrungFile))
+      .catch((err) => {
+        if (err.code === 'ENOENT') {
+          return null;
+        }
+        throw err;
+      });
+  }
 }
+
 
 module.exports = SimpleDB;

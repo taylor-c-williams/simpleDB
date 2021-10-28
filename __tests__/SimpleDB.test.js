@@ -13,9 +13,12 @@ describe ('SimpleDB', () => {
     const DB = new SimpleDB(rootDir);
     const object = { words: 'this is a string' };
 
-    return DB
+    return DB      
       .save(object)
-      .then((booger) => 
-        expect(booger).toEqual(expect.any(String)));
+      .then(() => DB.get(object.id))
+      .then((booger) => {
+        expect(booger).toEqual(expect.any(String));
+      }
+      );
   });
 });
