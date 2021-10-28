@@ -16,8 +16,8 @@ describe ('SimpleDB', () => {
     return DB      
       .save(object)
       .then(() => DB.get(object.id))
-      .then((booger) => {
-        expect(booger).toEqual(expect.any(String));
+      .then((newObj) => {
+        expect(newObj).toEqual(object);
       }
       );
   });
