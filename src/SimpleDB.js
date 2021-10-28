@@ -1,4 +1,4 @@
-const { create } = require('domain');
+// const { create } = require('domain');
 const { readFile, writeFile } =  require('fs/promises');
 const path = require('path');
 const shortid = require('shortid');
@@ -27,6 +27,14 @@ class SimpleDB {
         }
         throw err;
       });
+  }
+
+  getAll(rootDir) {
+    // Promise.All 
+    // readFile for each file
+    // Unstring
+    // Get objects
+    // return obj as item in an array
   }
 }
 

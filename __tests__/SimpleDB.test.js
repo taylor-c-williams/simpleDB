@@ -1,24 +1,31 @@
-const { mkdir, rm } = require ('fs/promises');
+const { mkdir, rm } = require('fs/promises');
 const SimpleDB = require('../src/SimpleDB');
 
-describe ('SimpleDB', () => {
+describe('SimpleDB', () => {
   const rootDir = './__tests__/rootDir';
-    
+
   beforeEach(() => {
-    return rm(rootDir, { force: true, recursive: true }).then (() => mkdir(rootDir, { recursive: true })
+    return rm(rootDir, { force: true, recursive: true }).then(() =>
+      mkdir(rootDir, { recursive: true })
     );
   });
 
-  it('Creates and saves an object', () => {
-    const DB = new SimpleDB(rootDir);
-    const object = { words: 'this is a string' };
+  const DB = new SimpleDB(rootDir);
 
-    return DB      
-      .save(object)
+  // Save & Get by I.D.
+  it('Creates and saves an object', () => {
+    const object = { words: 'this is a string' };
+    return DB.save(object)
       .then(() => DB.get(object.id))
       .then((newObj) => {
         expect(newObj).toEqual(object);
-      }
-      );
+      });
+  });
+
+  // Get All
+  it('Returns an array of all objects within the directory', () => {
+    return DB.getAll(rootDir).then((newObj) => {
+      expect(newObj).toBeUndefined;
+    });
   });
 });
