@@ -15,6 +15,6 @@ describe ('SimpleDB', () => {
 
     return DB
       .save(object)
-      .then((actualObject) => expect(actualObject).toEqual(object));
+      .then((object) => expect(object).toEqual(object));
   });
 });
