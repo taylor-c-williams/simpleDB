@@ -56,9 +56,13 @@ class SimpleDB {
     });
   }
 
-  update(id, object) {
-    id = object.id;
-    return appendFile(object.id, object);
+  update(id, data) {
+    const path = `${this.rootDir}/${id}`;
+    return appendFile(path, data).then(() => this.getPath(id));
+  }
+
+  getPath(id) {
+    return path.join(this.rootDir, `${id}.json`);
   }
 }
 

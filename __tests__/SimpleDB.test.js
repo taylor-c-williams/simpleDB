@@ -1,16 +1,16 @@
 const { mkdir, rm, readdir } = require('fs/promises');
+const { getHeapSnapshot } = require('v8');
 const SimpleDB = require('../src/SimpleDB');
 
 describe('SimpleDB', () => {
   const rootDir = './__tests__/rootDir';
+  const newDB = new SimpleDB(rootDir);
 
   beforeEach(() => {
     return rm(rootDir, { force: true, recursive: true }).then(() =>
       mkdir(rootDir, { recursive: true })
     );
   });
-
-  const newDB = new SimpleDB(rootDir);
 
   // Save & Get by ID
   it('Creates and saves an object', () => {
@@ -62,11 +62,8 @@ describe('SimpleDB', () => {
     const object = { anArray: 'of objections' };
     return newDB
       .save(object)
-      .then(() => newDB.update(object.id, 'update'))
+      .then(() => newDB.update(object.id, 'ding dong'))
       .then(() => newDB.get(object.id))
-      .then(() => console.log(object))
-      .then((arrayOfObjects) =>
-        expect(arrayOfObjects).toEqual(object, 'update')
-      );
+      .then((arrayOfObjects) => expect(arrayOfObjects).toContain('update'));
   });
 });
