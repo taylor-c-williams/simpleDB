@@ -48,7 +48,7 @@ class SimpleDB {
 
   remove(id) {
     const filePath = `${this.rootDir}/${id}.json`;
-    return rm(filePath, { force: true, recursive: true }).catch((err) => {
+    return rm(filePath, { force: true }).catch((err) => {
       if (err.code === 'ENOENT') {
         return null;
       }
@@ -56,8 +56,9 @@ class SimpleDB {
     });
   }
 
-  update(file, update) {
-    appendFile(file, update);
+  update(id, object) {
+    id = object.id;
+    return appendFile(object.id, object);
   }
 }
 

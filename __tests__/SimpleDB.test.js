@@ -45,6 +45,7 @@ describe('SimpleDB', () => {
   });
 
   // Remove(id)
+  // Needs refactoring
   it('Removes a file by id', () => {
     const object = { words: 'this is a string' };
     return newDB
@@ -56,12 +57,16 @@ describe('SimpleDB', () => {
   });
 
   // Update object
+  //Needs refactoring
   it('Updates an object', () => {
     const object = { anArray: 'of objections' };
     return newDB
       .save(object)
-      .then(() => newDB.update('object', 'update'))
+      .then(() => newDB.update(object.id, 'update'))
       .then(() => newDB.get(object.id))
-      .then((arrayOfObjects) => expect(arrayOfObjects).toEqual(object));
+      .then(() => console.log(object))
+      .then((arrayOfObjects) =>
+        expect(arrayOfObjects).toEqual(object, 'update')
+      );
   });
 });
