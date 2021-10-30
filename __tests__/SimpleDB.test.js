@@ -1,4 +1,4 @@
-const { mkdir, rm } = require('fs/promises');
+const { mkdir, rm, readdir } = require('fs/promises');
 const SimpleDB = require('../src/SimpleDB');
 
 describe('SimpleDB', () => {
@@ -45,14 +45,14 @@ describe('SimpleDB', () => {
   });
 
   // Remove(id)
-  // Needs refactoring
   it('Removes a file by id', () => {
     const object = { words: 'this is a string' };
     return newDB
       .save(object)
-      .then(() => newDB.get(object.id))
-      .then((newObj) => {
-        expect(newObj).toEqual(object);
+      .then(() => newDB.remove(object.id))
+      .then(() => readdir(rootDir))
+      .then((fileDir) => {
+        expect(fileDir).not.toEqual(object);
       });
   });
 
