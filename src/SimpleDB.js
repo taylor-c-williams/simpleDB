@@ -1,4 +1,4 @@
-const { readFile, writeFile, readdir } = require('fs/promises');
+const { readFile, writeFile, readdir, rm } = require('fs/promises');
 const path = require('path');
 const shortid = require('shortid');
 
@@ -44,6 +44,11 @@ class SimpleDB {
       )
     );
     return filePromise;
+  }
+
+  remove(id) {
+    const filePath = `${this.rootDir}/${id}.json`;
+    return rm(filePath, { force: true, recursive: true });
   }
 }
 

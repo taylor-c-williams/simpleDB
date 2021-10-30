@@ -43,4 +43,15 @@ describe('SimpleDB', () => {
         expect(arrayOfObjects).toEqual(expect.arrayContaining(expected))
       );
   });
+
+  // Remove(id)
+  it('Removes a file by id', () => {
+    const object = { words: 'this is a string' };
+    return newDB
+      .save(object)
+      .then(() => newDB.get(object.id))
+      .then((newObj) => {
+        expect(newObj).toEqual(object);
+      });
+  });
 });
