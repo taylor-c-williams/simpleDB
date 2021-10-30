@@ -54,4 +54,14 @@ describe('SimpleDB', () => {
         expect(newObj).toEqual(object);
       });
   });
+
+  // Update object
+  it('Updates an object', () => {
+    const object = { anArray: 'of objections' };
+    return newDB
+      .save(object)
+      .then(() => newDB.update('object', 'update'))
+      .then(() => newDB.get(object.id))
+      .then((arrayOfObjects) => expect(arrayOfObjects).toEqual(object));
+  });
 });
