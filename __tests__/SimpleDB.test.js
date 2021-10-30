@@ -10,31 +10,37 @@ describe('SimpleDB', () => {
     );
   });
 
-  const DB = new SimpleDB(rootDir);
+  const newDB = new SimpleDB(rootDir);
 
-  // Save & Get by I.D.
+  // Save & Get by ID
   it('Creates and saves an object', () => {
     const object = { words: 'this is a string' };
-    return DB.save(object)
-      .then(() => DB.get(object.id))
+    return newDB
+      .save(object)
+      .then(() => newDB.get(object.id))
       .then((newObj) => {
         expect(newObj).toEqual(object);
       });
   });
 
+  // get(id) returns null if ENOENT
+  it('Returns null if enoent', () => {
+    const wrongId = 1;
+    return newDB.get(wrongId).then((results) => expect(results).toEqual(null));
+  });
+
   // Get All
   it('Returns an array of all objects within the directory', () => {
     const expected = [
-      { anArray: 'of objects' },
-      { likeSo: 'another object' }
+      { anArray: 'of objects', id: expect.any(String) },
+      { likeSo: 'another object', id: expect.any(String) },
     ];
-
-    return DB
-      .save([{ anArray: 'of objects' }])
-      .then(() => DB.save({ likeSo: 'another object' }))
-      .then (DB.getAll())
-      .then((allObj) => 
-        expect(allObj).toEqual(expected));
+    return newDB
+      .save({ anArray: 'of objects' })
+      .then(() => newDB.save({ likeSo: 'another object' }))
+      .then(() => newDB.getAll())
+      .then((arrayOfObjects) =>
+        expect(arrayOfObjects).toEqual(expect.arrayContaining(expected))
+      );
   });
 });
-
