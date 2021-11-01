@@ -59,9 +59,12 @@ class SimpleDB {
     });
   }
 
-  update(id, data) {
-    return appendFile(this.getPath(id), data);
-  }
+  // update(id, update) {
+  //   const dataObj = JSON.parse(this.getPath(id));
+  //   dataObj.push(update);
+  //   const newObj = JSON.stringify(dataObj);
+  //   writeFile(newObj);
+  // }
 }
 
 module.exports = SimpleDB;
