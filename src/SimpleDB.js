@@ -7,6 +7,10 @@ class SimpleDB {
     this.rootDir = rootDir;
   }
 
+  getPath(id) {
+    return path.join(this.rootDir, `${id}.json`);
+  }
+
   save(file) {
     this.id = `${shortid.generate()}`;
     file.id = this.id;
@@ -17,7 +21,7 @@ class SimpleDB {
   }
 
   get(id) {
-    const filePath = `${this.rootDir}/${id}.json`;
+    const filePath = this.getPath(id);
     return readFile(filePath, JSON)
       .then((unstrungFile) => JSON.parse(unstrungFile))
       .catch((err) => {
@@ -34,7 +38,6 @@ class SimpleDB {
       allFiles.map((fileName) =>
         readFile(`${this.rootDir}/${fileName}`, JSON)
           .then((unstrungFile) => JSON.parse(unstrungFile))
-
           .catch((err) => {
             if (err.code === 'ENOENT') {
               return null;
@@ -47,7 +50,7 @@ class SimpleDB {
   }
 
   remove(id) {
-    const filePath = `${this.rootDir}/${id}.json`;
+    const filePath = this.getPath(id);
     return rm(filePath, { force: true }).catch((err) => {
       if (err.code === 'ENOENT') {
         return null;
@@ -57,12 +60,7 @@ class SimpleDB {
   }
 
   update(id, data) {
-    const path = `${this.rootDir}/${id}`;
-    return appendFile(path, data).then(() => this.getPath(id));
-  }
-
-  getPath(id) {
-    return path.join(this.rootDir, `${id}.json`);
+    return appendFile(this.getPath(id), data);
   }
 }
 
